@@ -4,6 +4,8 @@ from digital_product import DigitalProduct
 from supplier import Supplier
 from can_be_shipped import CanBeShipped
 from inventory import Inventory
+from input_helpers import get_positive_float
+from product_factory import ProductFactory
 
 def get_float_input(message):
     while True:
@@ -81,24 +83,24 @@ def main():
                 print("Product ID and name cannot be empty.")
                 continue
 
-            price = get_float_input("Price: $")
+            price = get_positive_float("Price: $")
             stock = get_int_input("Stock Quantity: ")
             supplier = get_supplier_input(inventory)
 
-
             if product_type == "1":
-                weight = get_float_input("Weight (kg): ")
-
-                product = PhysicalProduct(
-                    prod_id, name, price, stock, weight, supplier
-                )
-
+                extra = get_float_input("Weight (kg): ")
+                kind = "physical"
             else:
-                download_size = get_float_input("Download Size (MB): ")
+                extra = get_float_input("Download Size (MB): ")
+                kind = "digital"
 
-                product = DigitalProduct(
-                    prod_id, name, price, stock, download_size, supplier
+            try:
+                product = ProductFactory.create(
+                    kind, prod_id, name, price, stock, supplier, extra
                 )
+            except ValueError as error:
+                print(f"Could not add product: {error}")
+                continue
 
             inventory.add_product(product)
             print("Product added successfully!")
@@ -119,7 +121,11 @@ def main():
 
             new_stock = get_int_input("New Stock Quantity: ")
 
-            product.update_stock(new_stock)
+            try:
+                product.update_stock(new_stock)
+                print("Stock updated successfully!")
+            except ValueError as error:
+                print(f"Could not update stock: {error}")
 
             print("Stock updated successfully!")
 
@@ -127,8 +133,7 @@ def main():
             print("\nSearch Product")
 
             prod_id = input("Enter Product ID: ").strip()
-            product = inventory.search_product(prod_id)
-
+            product = inventory.find_product(prod_id)
             if product is None:
                 print("\nProduct not found.")
 

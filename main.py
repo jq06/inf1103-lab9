@@ -35,7 +35,7 @@ def get_int_input(message):
 def get_supplier_input(inventory: Inventory) -> Supplier:
     supplier_id = input("Supplier ID: ").strip()
 
-    for product in inventory.products:      # reuse an existing supplier
+    for product in inventory.products:
         if product.supplier.supplier_id == supplier_id:
             print(f"Using existing supplier: {product.supplier.name}")
             return product.supplier

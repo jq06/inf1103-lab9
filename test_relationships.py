@@ -20,7 +20,7 @@ laptop.supplier.display_information()
 ebook.supplier.display_information()
 print("Same supplier object:", laptop.supplier is ebook.supplier)
 
-del supplier  # removes only the variable name
+del supplier
 print("After del, laptop supplier:", laptop.supplier.name)
 print("After del, ebook supplier:", ebook.supplier.name)
 

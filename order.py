@@ -2,7 +2,6 @@ from product import Product
 
 
 class OrderLine:
-    """Only Order should create these (composition)."""
 
     def __init__(self, product: Product, quantity: int) -> None:
         if quantity <= 0:

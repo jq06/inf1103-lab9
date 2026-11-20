@@ -8,8 +8,8 @@ class Product(ABC):
                  stock: int, supplier: Supplier) -> None:
         self.product_id: str = product_id
         self.name: str = name
-        self.price = price      # goes through the setter (validated)
-        self.stock = stock      # goes through the setter (validated)
+        self.price = price    
+        self.stock = stock      
         self.supplier: Supplier = supplier
 
     @property
@@ -33,7 +33,7 @@ class Product(ABC):
         self.__stock = value
 
     def update_stock(self, new_stock: int) -> None:
-        self.stock = new_stock  # reuses the validated setter
+        self.stock = new_stock  
 
     def display_information(self) -> None:
         print(f"Product ID: {self.product_id}")

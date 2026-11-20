@@ -22,7 +22,7 @@ class Inventory:
     def remove_product(self, product_id: str) -> Product | None:
         product = self.find_product(product_id)
         if product is not None:
-            self.__products.remove(product)  # drops the reference only
+            self.__products.remove(product) 
         return product
 
     def display_all_products(self) -> None:

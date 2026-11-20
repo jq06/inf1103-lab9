@@ -5,6 +5,8 @@ class OrderLine:
     """Only Order should create these (composition)."""
 
     def __init__(self, product: Product, quantity: int) -> None:
+        if quantity <= 0:
+            raise ValueError("Quantity must be greater than zero.")
         self.product: Product = product
         self.quantity: int = quantity
 
@@ -27,9 +29,7 @@ class Order:
         return list(self.__order_lines)
 
     def add_order_line(self, product: Product, quantity: int) -> None:
-        if quantity <= 0:
-            raise ValueError("Quantity must be greater than zero.")
-        order_line = OrderLine(product, quantity)  # Order creates its own parts
+        order_line = OrderLine(product, quantity)
         self.__order_lines.append(order_line)
 
     def remove_order_line(self, product_id: str) -> None:

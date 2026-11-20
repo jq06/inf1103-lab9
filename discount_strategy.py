@@ -29,3 +29,7 @@ class BulkDiscount(DiscountStrategy):
 
     def apply(self, total: float) -> float:
         return total - self.amount if total >= self.threshold else total
+
+class StudentDiscount(PercentageDiscount):
+    def __init__(self) -> None:
+        super().__init__(5)

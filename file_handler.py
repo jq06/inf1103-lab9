@@ -4,7 +4,7 @@ import os
 from inventory import Inventory
 from physical_product import PhysicalProduct
 from digital_product import DigitalProduct
-from product import Product
+from product_factory import ProductFactory
 from supplier import Supplier
 
 DEFAULT_SUPPLIER: dict[str, str] = {
@@ -38,20 +38,14 @@ def load_inventory() -> Inventory:
             for item in data:
                 supplier = get_shared_supplier(item, suppliers)
 
-                if item["type"] == "physical":
-                    product = PhysicalProduct(
-                        item["id"], item["name"], item["price"],
-                        item["stock"], item["weight"], supplier
+                try:
+                    extra = item.get("weight", item.get("download_size", 0.0))
+                    product = ProductFactory.create(
+                        item["type"], item["id"], item["name"],
+                        item["price"], item["stock"], supplier, extra
                     )
-
-                elif item["type"] == "digital":
-                    product = DigitalProduct(
-                        item["id"], item["name"], item["price"],
-                        item["stock"], item["download_size"], supplier
-                    )
-
-                else:
-                    print("Unknown product type. Product skipped.")
+                except ValueError as error:
+                    print(f"Product skipped: {error}")
                     continue
 
                 inventory.add_product(product)
